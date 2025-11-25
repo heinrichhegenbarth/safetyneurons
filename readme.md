@@ -1,6 +1,5 @@
 # This is the Github repo for the miniproject in AML4NLP
 
-
 ## Main Idea
 Using the concept safety neurons (SN) to predict "unsafe" inputs to an LLM
 
