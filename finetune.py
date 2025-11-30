@@ -10,6 +10,7 @@ from transformers import (
     AutoTokenizer,
     Trainer,
     TrainingArguments,
+    AutoProcessor,
 )
 
 # ------------------------------------------------------------
@@ -63,8 +64,7 @@ class SFTDataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        item = self.data[index]
-        messages = build_messages(item)
+        messages = self.data[index]
 
         # Tokenize user-only (prompt) to find boundary
         prompt_messages = messages[:-1]
@@ -149,10 +149,7 @@ def main():
     # if tokenizer.pad_token is None:
     #     tokenizer.pad_token = tokenizer.eos_token
 
-  
-
-    tokenizer = AutoTokenizer.from_pretrained("./models/qwen3/Qwen3-4B", local_files_only=True)
-    processor = AutoProcessor.from_pretrained("./models/qwen3/Qwen3-4B", local_files_only=True)
+    model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, local_files_only=True)
 
     # double check the target modules
     # doube check the config with chen paper
@@ -170,8 +167,8 @@ def main():
     # assumption that the data is already in the format {user: ..., assistant: ...}
     data = load_jsonl(DATA_PATH)
 
-    print(f"Loaded {len(raw_data)} samples from {DATA_PATH}")
-    print(f"Data Instance: {raw_data[0]}")
+    print(f"Loaded {len(data)} samples from {DATA_PATH}")
+    print(f"Data Instance: {data[0]}")
 
     train_dataset = SFTDataset(data, tokenizer=tokenizer, max_seq_length=MAX_SEQ_LENGTH)
     data_collator = CustomDataCollator(tokenizer=tokenizer)
