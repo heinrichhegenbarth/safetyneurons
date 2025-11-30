@@ -1,4 +1,4 @@
-from transformers import AutoProcessor, AutoModelForCausalLM
+from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 
 # loading model locally
