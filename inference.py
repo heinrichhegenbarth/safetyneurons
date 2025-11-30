@@ -2,6 +2,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM
 
 
 # loading model locally
+tokenizer = AutoTokenizer.from_pretrained("./models/qwen3/Qwen3-4B", local_files_only=True)
 processor = AutoProcessor.from_pretrained("./models/qwen3/Qwen3-4B", local_files_only=True)
 model = AutoModelForCausalLM.from_pretrained("./models/qwen3/Qwen3-4B", local_files_only=True)
 
