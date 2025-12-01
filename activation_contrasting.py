@@ -11,6 +11,7 @@ PATH_SAFE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B-SafeRL"
 DATA_PATH = "./data/safe&unsafe/dataset.json"
 SEED = 7
 
+
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 # M1
 model_base = AutoModelForCausalLM.from_pretrained(
@@ -48,15 +49,21 @@ def get_dataset(json_path=DATA_PATH):
     train = shuffled_data[:split_index]
     test = shuffled_data[split_index:]
 
+    with open("data/split/train.json", "w") as file:
+        json.dump(train, file)
+    with open("data/split/test.json", "w") as file:
+        json.dump(test, file)
+    with open("data/split/contrasting_data.json", "w") as file:
+        json.dump(contrasting_data, file)
+
     t_train = tokenize_function(train)
-    t_test = [tokenize_function(data_item) for data_item in test]
+    t_test = tokenize_function(data_item)
     t_contrasting = tokenize_function(contrasting_data)
 
     print(
         f"successfully tokenized {len(t_train)} train instances, {len(t_test)} test instances, {len(t_contrasting)} contrasting instances"
     )
     return t_contrasting, t_train, t_test
-
 
 def activation_contrasting(model, data, nlayers=36):
 
@@ -118,16 +125,6 @@ def compute_change_scores(activations_base, activations_safe, nlayers=36):
 
 
 def topk(list_of_tup, k: float):
-    """
-    function to return top k of safety neurons
-
-    Args:
-        tup: tuple containing in the form (index, value)
-        k: the top k% of safety neurons we want to get
-
-    returns:
-        res: the resulting top k% safety neurons
-    """
     descending = sorted(list_of_tup, key=lambda x: x[int(1)], reverse=True)
     size = int(len(list_of_tup) * k)
     res = descending[:size]
@@ -136,20 +133,26 @@ def topk(list_of_tup, k: float):
 
 
 def main():
+    # t_contrasting, t_train, t_test = get_dataset()
+    # print(t_contrasting)
+    # print(t_train)
+    # print(t_test)
+
+    # activations_base, activations_safe = activation_contrasting(
+    #     model_base, t_contrasting
+    # )
+    # result = compute_change_scores(activations_base, activations_safe)
+    # safety_neurons = topk(result, 0.05)
+
+    # print(len(safety_neurons))
+    # print(safety_neurons)
+
+    # # save outputs
+    # with open("safety_neurons.json", "w") as file:
+    #     json.dump(safety_neurons, file)
+
     t_contrasting, t_train, t_test = get_dataset()
-    print(t_contrasting)
-    print(t_train)
-    print(t_test)
 
-    activations_base, activations_safe = activation_contrasting(
-        model_base, t_contrasting
-    )
-    result = compute_change_scores(activations_base, activations_safe)
-    safety_neurons = topk(result, 0.05)
-
-    print(len(safety_neurons))
-    print(safety_neurons)
-    
 
 if __name__ == "__main__":
     main()
