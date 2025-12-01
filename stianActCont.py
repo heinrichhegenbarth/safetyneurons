@@ -24,38 +24,18 @@ model_safe = AutoModelForCausalLM.from_pretrained(PATH_SAFE,
 
 
 
-with open('dataset.json', 'r') as file:
-    input = json.load(file)
+with open('/data/split/contrasting_data.json') as file: 
+    harm100 = json.load(file)
 
+df_prompt = pd.DateFrame(harm100)
+harm_prompts = df_prompt['content'].to_list()
 
-#saving as df
-df_prompt = pd.DataFrame(input)
-
-
-#subsetting 100 harmfull prompts and removing from df 
-
-harmfull100 = df_prompt[df_prompt['label']==1].sample(n=100)
-df_prompt = df_prompt.drop(harmfull100.index).reset_index(drop=True)
-
-#list of prompts for inference: 
-harm_promps = harmfull100['content'].to_list()
-
-
-#rebalancing
-balance = df_prompt[df_prompt['label']==0].sample(n=100)
-df_prompt = df_prompt.drop(balance.index).reset_index(drop=True)
-
-print(f'final df shape: {df_prompt.shape}')
-print(f'shape of harmfull subset: {harmfull100.shape}')
-
-#shufling df
-df_prompt.sample(frac=1).reset_index(drop=True)
 
 
 
 #-------------------------------inference--------------------------------
 
-inputs = tokenizer(harm_promps, return_tensors="pt", padding=True).to(model_base.device)
+inputs = tokenizer(harm_prompts, return_tensors="pt", padding=True).to(model_base.device)
 
 # dictionary for storing activations: 
 #TODO master dict??
