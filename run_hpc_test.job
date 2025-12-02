@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#SBATCH --job-name=SafetyNeurons    # Job name
+#SBATCH --output=job.%j.out         # Name of output file
+#SBATCH --cpus-per-task=1           # Your program is mostly single-threaded
+#SBATCH --gres=gpu                  # Request a GPU
+#SBATCH --mem=16G                   # Increase memory request
+#SBATCH --time=01:00:00             # Max run time
+#SBATCH --partition=acltr           # Partition
+
+module load Anaconda3  # Load anaconda
+
+
+echo "Running on $(hostname):"
+module load Anaconda3
+source activate /home/hheg_stli/condaenvs/myenv
+
+# Accept terms and conditions
+
+##---------------Removed below code-------------------
+#conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+#conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+# Init anaconda (in the HPC, prefer to use the following instead of 'conda init')
+
+
+echo "Python version: $(python --version)"
+echo "Working directory: $(pwd)"
+
+
+python createTesting.Data.py
+
+echo "jobs done! :)"
