@@ -19,7 +19,7 @@ model_base = AutoModelForCausalLM.from_pretrained(PATH_BASE,
 
 
 
-with open('./data/split/train.json') as file: 
+with open('./data/split/test.json') as file: 
     train = json.load(file)
 
 df_train = pd.DataFrame(train)
@@ -31,7 +31,7 @@ training_labels = df_train['label'].to_list()
 
 #-------------------------------inference--------------------------------
 
-inputs = tokenizer(train_prompts[:400], return_tensors="pt", padding=True).to(model_base.device)
+inputs = tokenizer(train_prompts, return_tensors="pt", padding=True).to(model_base.device)
 
 # dictionary for storing activations: 
 #TODO master dict??
@@ -83,4 +83,9 @@ print(mean_prompt.shape)
 
 df = pd.DataFrame(mean_prompt)
 
-df.to_csv('master_df.csv')
+df.to_csv('testing.csv')
+
+labels_df = pd.DataFrame(training_labels)
+
+labels_df.to_csv('testLabs.csv')
+
