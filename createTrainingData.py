@@ -6,7 +6,7 @@ import pandas as pd
 
 #-----------------------Data download-------------------------
 # model paths (update if different)
-PATH_BASE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B"                    
+PATH_BASE = "./models/qwen3/Qwen3-4B"                    
 
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 
@@ -31,7 +31,7 @@ training_labels = df_train['label'].to_list()
 
 #-------------------------------inference--------------------------------
 
-inputs = tokenizer(train_prompts, return_tensors="pt", padding=True).to(model_base.device)
+inputs = tokenizer(train_prompts[:2], return_tensors="pt", padding=True).to(model_base.device)
 
 # dictionary for storing activations: 
 #TODO master dict??
@@ -47,7 +47,7 @@ def get_hook(activation_dict, name):
 # Pick the MLP layers
 #TODO model the arcitecture in README.md
 nlayers = 36
-nlayers = min(nlayers, 36)      #ensures we stay within 36 (layers in LLM)
+nlayers = min(nlayers, 3)      #ensures we stay within 36 (layers in LLM)
 for index in range(nlayers):        
      
     # layer = model.model.layers[LAYER_INDEX]

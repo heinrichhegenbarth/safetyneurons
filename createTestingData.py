@@ -6,7 +6,7 @@ import pandas as pd
 
 #-----------------------Data download-------------------------
 # model paths (update if different)
-PATH_BASE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B"                    
+PATH_BASE = "./models/qwen3/Qwen3-4B"                    
 
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 
