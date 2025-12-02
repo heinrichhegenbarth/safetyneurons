@@ -6,7 +6,7 @@ import pandas as pd
 
 #-----------------------Data download-------------------------
 # model paths (update if different)
-PATH_BASE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B"                   
+PATH_BASE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B"                    
 
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 
@@ -19,31 +19,61 @@ model_base = AutoModelForCausalLM.from_pretrained(PATH_BASE,
 
 
 
-with open('dataset.json', 'r') as file:
-    input = json.load(file)
+with open('./data/split/train.json') as file: 
+    train = json.load(file)
+
+df_train = pd.DataFrame(train)
+train_prompts = df_train['content'].to_list()
+
+training_labels = df_train['label'].to_list()
 
 
-#saving as df
-df_prompt = pd.DataFrame(input)
+
+#-------------------------------inference--------------------------------
+
+inputs = tokenizer(train_prompts[:2], return_tensors="pt", padding=True).to(model_base.device)
+
+# dictionary for storing activations: 
+#TODO master dict??
+activations_base = {}
 
 
-#subsetting 100 harmfull prompts and removing from df 
+#TODO understand the hook function
+def get_hook(activation_dict, name):
+    def hook(module, input, output):
+        activation_dict[name] = output.detach().float().cpu()
+    return hook
 
-harmfull100 = df_prompt[df_prompt['label']==1].sample(n=100)
-df_prompt = df_prompt.drop(harmfull100.index).reset_index(drop=True)
+# Pick the MLP layers
+#TODO model the arcitecture in README.md
+nlayers = 36
+nlayers = min(nlayers, 3)      #ensures we stay within 36 (layers in LLM)
+for index in range(nlayers):        
+     
+    # layer = model.model.layers[LAYER_INDEX]
+    layer_base = model_base.model.layers[index]
 
-#list of prompts for inference: 
-harm_promps = harmfull100['content'].to_list()
+    #only hooking MLP activations: 
+    #layer.mlp.register_forward_hook(...)
+    hook_base = layer_base.mlp.register_forward_hook(get_hook(activations_base, f"layer_{index}"))
 
 
-#rebalancing
-balance = df_prompt[df_prompt['label']==0].sample(n=100)
-df_prompt = df_prompt.drop(balance.index).reset_index(drop=True)
+    # Forward pass - The inference
 
-print(f'final df shape: {df_prompt.shape}')
-print(f'shape of harmfull subset: {harmfull100.shape}')
+    with torch.no_grad():           
+        _ = model_base(**inputs)        # _ ignoring output since we only care about activations.      
 
-#shufling df
-df_prompt.sample(frac=1).reset_index(drop=True)
+    # Remove hooks - important ot reset the hook per iterations (avoiding memory leaks)
+    hook_base.remove()
 
-prompts = df_prompt['content']
+
+
+# flatten the layers to have a table with all neuron activations for all prompts
+#layers1 (prompts, tokens, neurons)
+print(activations_base['layer_0'].size())
+print(activations_base['layer_0'])
+long_tensor = torch.cat([layer for layer in activations_base[f'layer_{layer}']])
+# add back the labels to the data frame
+
+print(long_tensor)
+# save to hpc
