@@ -28,6 +28,6 @@ echo "Python version: $(python --version)"
 echo "Working directory: $(pwd)"
 
 
-python createTesting.Data.py
+python createTestingData.py
 
 echo "jobs done! :)"
