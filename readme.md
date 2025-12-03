@@ -20,12 +20,24 @@ The safety neurons are then identified by running the same harmful prompts throu
 that changed the most. These are our safety neurons. 
 
 
+## Discussion
+Our results as of 02.12 is that safety neurons can be identified using inference-time activation contrasting
+as presented in the Chen et. al. (2025) paper. Our preliminary results also confirm the authors' conlusion
+that the safety neurons are sparse (the heatmap in 1_activationContrasting.py illustrates this). 
+The main challenges of the project concerns the generation of the dataset used for the classification. 
+This process involves caching the activations of safety neurons on a dataset of prompts which proved to 
+be technically challenging, and computationally intensive. 
+
+
 ### Inference-time activation contrasting
 ![alt text](<WhatsApp Image 2025-12-02 at 16.28.35.jpeg>)
 
 
 ## Literature/ Reads
+<<<<<<< HEAD
 - Towards Understanding Safety Alignment:
+=======
+>>>>>>> 4551cd7df4304754427508433dc9751ab6418f52
 A Mechanistic Perspective from Safety Neurons 
 | [Chen et al., 2025](https://arxiv.org/pdf/2406.14144)
 

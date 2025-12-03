@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#SBATCH --job-name=unzip_jsonl       # Job name
+#SBATCH --output=unzip.%j.out        # Output file
+#SBATCH --cpus-per-task=1            # 1 CPU
+#SBATCH --time=02:00:00              # Max runtime 2 hrs
+#SBATCH --partition=scavenge         # Queue
+
+# Move to the target directory
+cd /home/hheg_stli/safetyneurons/data/harmless
+
+# Unzip files
+gunzip test.jsonl.gz
+gunzip train.jsonl.gz
