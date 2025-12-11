@@ -11,7 +11,7 @@ import pandas as pd
 # Data download
 
 PATH_BASE = "./models/qwen3/Qwen3-4B"
-BATCH_SIZE = 2
+BATCH_SIZE = 40
 
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 
@@ -39,10 +39,10 @@ print(
 )
 
 # RESTRICT DATASET TO 4 PROMPTS FOR TESTING
-train_prompts = train_prompts[:4]
-training_labels = training_labels[:4]
-test_prompts = test_prompts[:4]
-test_labels = test_labels[:4]
+# train_prompts = train_prompts[:4]
+# training_labels = training_labels[:4]
+# test_prompts = test_prompts[:4]
+# test_labels = test_labels[:4]
 
 # %%
 # Inference
