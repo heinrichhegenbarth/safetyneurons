@@ -120,8 +120,8 @@ joblib.dump(model_full, f"{OUTPUT_PATH}/model_full.pkl")
 # %%
 # predictions
 
-predictions_train_sn = model_sn.predict(X_train_sn)
-predictions_test_sn = model_sn.predict(X_test_sn)
+# predictions_train_sn = model_sn.predict(X_train_sn)
+# predictions_test_sn = model_sn.predict(X_test_sn)
 
 predictions_train_pca = model_pca.predict(X_train_pca)
 predictions_test_pca = model_pca.predict(X_test_pca)
@@ -143,6 +143,6 @@ def evaluate_model(model_name, y_true, predictions):
     print(f"classification report: {report} \n \n")
 
 
-evaluate_model("safety neurons", y_test_sn, predictions_test_sn)
+# evaluate_model("safety neurons", y_test_sn, predictions_test_sn)
 evaluate_model("pca", y_test_pca, predictions_test_pca)
 evaluate_model("full", y_test_full, predictions_test_full)
