@@ -1,3 +1,5 @@
+# activation contrasting based on 100 harmful prompts
+
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import snapshot_download
@@ -15,11 +17,9 @@ PATH_SAFE = "./.ipynb_checkpoints/models/qwen3/Qwen3-4B-SafeRL"
 
 tokenizer = AutoTokenizer.from_pretrained(PATH_BASE, local_files_only=True)
 
-# Load both models
 model_base = AutoModelForCausalLM.from_pretrained(
     PATH_BASE, dtype=torch.float16, device_map="auto", local_files_only=True
 )
-
 model_safe = AutoModelForCausalLM.from_pretrained(
     PATH_SAFE, dtype=torch.float16, device_map="auto", local_files_only=True
 )
@@ -51,9 +51,7 @@ def get_hook(activation_dict, name):
 
 
 # Pick the MLP layers
-nlayers = 36
-nlayers = min(nlayers, 36)  # ensures we stay within 36 (layers in LLM)
-for index in range(nlayers):
+for index in range(36): # number of layers in the model
 
     # layer = model.model.layers[LAYER_INDEX]
     layer_base = model_base.model.layers[index]
@@ -117,7 +115,6 @@ print("Features (contrast):", flat_values.numel())
 
 #%%
 # Selecting top activations
-
 
 def topk(list_of_tup, k: float):
     """
