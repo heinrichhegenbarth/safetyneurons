@@ -58,8 +58,8 @@ print(f"test_raw head: {test_raw.head(2)}")
 # preparing the data
 
 # filter by safety neurons
-train_temp = train_raw.drop(columns=["0"])
-test_temp = test_raw.drop(columns=["0"])
+train_temp = train_raw.iloc[:, 0]
+test_temp = test_raw.iloc[:, 0]
 
 
 safety_set = set(safety_neurons['neuron_index'])
