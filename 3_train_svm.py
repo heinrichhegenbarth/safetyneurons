@@ -8,13 +8,17 @@ from sklearn.preprocessing import StandardScaler # try with and without
 from sklearn.metrics import accuracy_score
 
 
-BASE_PATH = "/data/classifier_data/"
+BASE_PATH = "/data/classifier_data"
 OUTPUT_PATH = "./models/classifiers"
 # %%
 # Data
-train_raw = pd.read_csv(f'{BASE_PATH}/training_data.csv') 
+train_raw = pd.read_csv(f'{BASE_PATH}/training_data.csv')
 test_raw = pd.read_csv(f'{BASE_PATH}/testing_data.csv')
 safety_neurons = pd.read_csv(f'{BASE_PATH}/top_safetyneurons.csv')
+
+# limit data for testing to 10 samples
+train_raw = train_raw.sample(10)
+test_raw = test_raw.sample(10)
 
 print(f"train_raw shape: {train_raw.shape}") # train_raw shape: (3539, 92161)
 print(f"test_raw shape: {test_raw.shape}") # test_raw shape: (885, 92161)
