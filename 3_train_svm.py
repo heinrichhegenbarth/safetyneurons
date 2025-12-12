@@ -61,8 +61,9 @@ print(f"test_raw head: {test_raw.head(2)}")
 train_temp = train_raw.drop(columns=["0"])
 test_temp = test_raw.drop(columns=["0"])
 
-safety_set = set(safety_neurons[0])
+safety_set = set(safety_neurons.iloc[:, 0])
 column_mask = train_temp.columns.isin(safety_set)
+
 X_train_sn = train_temp.loc[:, column_mask]
 y_train_sn = train_raw.iloc[:, 0]
 X_test_sn = test_raw.loc[:, column_mask]
