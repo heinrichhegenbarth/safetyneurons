@@ -18,6 +18,6 @@ echo "Python version: $(python --version)"
 echo "Working directory: $(pwd)"
 
 
-python 2_create_data.py
+python "3_(h)train_svm.py"
 
 echo "jobs done! :)"
