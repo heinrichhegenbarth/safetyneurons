@@ -4,3 +4,6 @@ output.txt
 data/*
 models/*
 .ipynb_checkpoints/*
+*.swp
+*.swo
+*.swm
