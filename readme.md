@@ -33,6 +33,7 @@ dim training: 3539 rows, 92160 activations
 dim testing:  885 rows, 92160 activations
 safety neurons: 4608
 
+```
 ----------------safety neurons----------------
 accuracy: 0.9853107344632769
 recall: 0.9823008849557522
@@ -46,9 +47,9 @@ classification report:               precision    recall  f1-score   support
     accuracy                           0.99       885
    macro avg       0.99      0.99      0.99       885
 weighted avg       0.99      0.99      0.99       885
+```
 
-
-
+```
 ----------------pca----------------
 accuracy: 0.984180790960452
 recall: 0.9845132743362832
@@ -62,9 +63,9 @@ classification report:               precision    recall  f1-score   support
     accuracy                           0.98       885
    macro avg       0.98      0.98      0.98       885
 weighted avg       0.98      0.98      0.98       885
+```
 
-
-
+```
 ----------------full----------------
 accuracy: 0.9898305084745763
 recall: 0.9889380530973452
@@ -78,7 +79,7 @@ classification report:               precision    recall  f1-score   support
     accuracy                           0.99       885
    macro avg       0.99      0.99      0.99       885
 weighted avg       0.99      0.99      0.99       885
-
+```
 
 
 
