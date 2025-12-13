@@ -3,6 +3,7 @@
 
 import pandas as pd
 from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.metrics import (
     accuracy_score,
     recall_score,
