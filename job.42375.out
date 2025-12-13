@@ -1,4 +1,0 @@
-Running on cn8.hpc.itu.dk:
-Python version: Python 3.11.14
-Working directory: /home/hheg_stli/safetyneurons
-slurmstepd: error: *** JOB 42375 ON cn8 CANCELLED AT 2025-12-13T03:49:22 ***

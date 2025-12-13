@@ -1,6 +1,0 @@
-Running on cn7.hpc.itu.dk:
-Python version: Python 3.11.14
-Working directory: /home/hheg_stli/safetyneurons
-/var/spool/slurmd/job42364/slurm_script: line 23: 2792202 Killed                  python "3_train_svm.py"
-jobs done! :)
-slurmstepd: error: Detected 1 oom_kill event in StepId=42364.batch. Some of the step tasks have been OOM Killed.
