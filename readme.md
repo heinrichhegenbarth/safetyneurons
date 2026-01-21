@@ -5,7 +5,7 @@ Heinrich Hegenbarth
 
 ## Main Idea
 Using the concept safety neurons (SN) to predict "unsafe" inputs to an LLM.
-The central problem is within the domain of human allignment of LLM. 
+The central problem is within the domain of human allignment of LLMs. 
 More specifically, it concerns how safety neurons can be identified in LLMs, 
 and whether we can utilize the activations of these neurons to predict an unsafe prompt. 
 
